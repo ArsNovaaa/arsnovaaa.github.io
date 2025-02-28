@@ -7,6 +7,14 @@ tags: [SDF, Interactive simulation, Notes]
 toc:  true
 math: true
 ---
+<script>
+MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']]
+  }
+};
+</script>
+
 最近在读两篇关于SDF应用的论文，做一些简单记录。
 {: .message }
 
@@ -17,7 +25,7 @@ math: true
 $$\phi_d = \phi_m(g(x_s))$$
 
 这里：
-\\(\Phi_d\\) 表示变形后的距离场。
+$\Phi_d$ 表示变形后的距离场。
 \\(\Phi_m\\) 是在材料空间中定义的（静态）距离场。
 \\(g(x_s)\\) 是从世界空间到材料空间的映射函数。
-\\(E=mc^2\\)
+
