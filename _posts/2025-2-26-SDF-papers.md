@@ -79,9 +79,44 @@ $$
  d = \begin{bmatrix} \frac{\partial \phi_d}{\partial u} \ \frac{\partial \phi_d}{\partial v} \ \frac{\partial \phi_d}{\partial w} \end{bmatrix}^T = \begin{bmatrix} \nabla \phi_m(x_m) G(x_s)_p \ \nabla \phi_m(x_m) G(x_s)_q \ \nabla \phi_m(x_m) G(x_s)_r \end{bmatrix}^T 
 $$
 
-这种方法的一个关键优势是它将弹性离散化与碰撞表示解耦。这使我们可以使用规则且相对粗糙的六面体网格（分解为四面体）来计算内部弹性动力学，同时使用高分辨率 SDF 表示来解决碰撞。
+这种方法的一个关键优势是它将弹性离散化与碰撞表示解耦。这使其可以用规则且相对粗糙的六面体网格（分解为四面体）来计算内部弹性动力学，同时使用高分辨率 SDF 表示来解决碰撞。
 
 ## 《Bounding Volume Hierarchies Centric Adaptive Distance Field Computation for Deformable Objects on GPUs》
 主要介绍了BADF（基于包围体层次结构的自适应距离场计算）算法，这是一种用于加速刚性和可变形模型在图形处理单元（GPU）上构建自适应距离场（ADFs）的新方法，它通过构造包围体层次结构（BVH），并利用该层次结构生成基于八叉树的自适应距离场。该算法还利用了帧间的一致性来加速计算。对BVH的并行快速构建，使用了Morton码，具体算法流程可以参考09年EG上的《Fast BVH Construction on GPUs》这篇文章。
+### 基于BVH生成八叉树的实现原理
 
+#### 核心参数说明
+- **δ值**：表示Morton码前缀长度或节点深度，每个层级对应三维空间的细分
+- **3整除规则**：每3位Morton码对应八叉树的一个层级划分（X/Y/Z各1位）
 
+#### 构建流程步骤
+
+1. **BVH预处理**
+   - 为所有节点计算Morton码
+   - 记录每个节点的δ值（编码长度/深度层级）
+
+2. **层级映射规则**
+   ```cpp
+   int GetOctreeLevel(int delta) {
+       return delta / 3; // 每3位对应一个八叉树层级
+   }
+3. 节点生成规则
+
+    - 当满足：(child.delta/3 - parent.delta/3) > 0 时
+    - 生成中间八叉树节点
+    - 示例：
+        父节点 δ=3 → Level 1
+        子节点 δ=6 → Level 2
+        差值=3 → 需要生成Level 2的八叉树节点。
+
+4. 空间转换关系
+
+   - 二进制：ZYXZYX... 
+   - 每3位对应： 
+      bit2 - Z轴方位 (0:负向, 1:正向)
+      bit1 - Y轴方位
+      bit0 - X轴方位
+
+### 根据八叉树实现快速ADF查询
+
+对每个八叉树网格点执行距离查询以构建最终距离场。分配每个角点一个Morton码，确保每个角点只有一个查询。
