@@ -123,3 +123,7 @@ $$
 ### 根据八叉树实现快速ADF查询
 
 对每个八叉树网格点执行距离查询以构建最终距离场。分配每个角点一个Morton码，确保每个角点只有一个查询。
+
+### 一些想法
+应用变形映射生成Voronoi图（A simple GPU-based approach for 3D Voronoi diagram construction and visualization IEEE 2005），再生成SDF。
+直接在八叉树结构下的ADF角点应用变形映射？代替可变形笼（四面体网格）。
