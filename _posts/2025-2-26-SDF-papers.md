@@ -96,10 +96,13 @@ $$
    - 记录每个节点的δ值（编码长度/深度层级）
 
 2. **层级映射规则**
-   ```cpp
-   int GetOctreeLevel(int delta) {
-       return delta / 3; // 每3位对应一个八叉树层级
-   }
+
+   {% highlight cpp %}
+    int GetOctreeLevel(int delta) {
+        return delta / 3; // 每3位对应一个八叉树层级
+    }
+   {% endhighlight %}
+
 3. 节点生成规则
 
     - 当满足：(child.delta/3 - parent.delta/3) > 0 时
