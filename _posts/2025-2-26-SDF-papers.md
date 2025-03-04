@@ -2,7 +2,7 @@
 layout: post
 title: SDF Papers
 date: 2024-7-23 20:08 +0800
-last_modified_at: 2025-2-27 21:08 +0800
+last_modified_at: 2025-1-2 21:08 +0800
 tags: [SDF, Interactive simulation, Notes]
 toc:  true
 math: true
