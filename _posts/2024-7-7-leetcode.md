@@ -1,4 +1,3 @@
-
 ---
 layout: post
 title: Leetcode
@@ -8,6 +7,7 @@ tags: [leetcode，notes]
 toc:  true
 math: true
 ---
+
 ## 二分法
 {% highlight cpp %}
 #include vector>
@@ -222,3 +222,111 @@ nextGreater 结果：[3,3,4,-1,-1,-1]
 prevSmaller 结果：[-1,-1,1,2,1,-1]
 */
 {% endhighlight %}
+
+## 单调队列
+{% highlight cpp %}
+#include <deque>
+#include <vector>
+
+vector<int> maxSlidingWindow(vector<int>& nums, int k) {
+    deque<int> dq; // 存储元素下标（维护单调递减队列）
+    vector<int> result;
+
+    for (int i = 0; i < nums.size(); ++i) {
+        // 移除超出窗口范围的元素
+        while (!dq.empty() && dq.front() < i - k + 1) {
+            dq.pop_front();
+        }
+
+        // 维护单调递减特性
+        while (!dq.empty() && nums[dq.back()] < nums[i]) {
+            dq.pop_back();
+        }
+
+        dq.push_back(i);
+
+        // 当窗口形成后记录结果
+        if (i >= k - 1) {
+            result.push_back(nums[dq.front()]);
+        }
+    }
+    return result;
+}
+{% endhighlight %}
+
+## 滑动窗口
+{% highlight cpp %}
+int lengthOfLongestSubstring(string s) {
+    unordered_map<char, int> charMap;
+    int left = 0, maxLen = 0;
+    for (int right = 0; right < s.size(); right++) {
+        if (charMap.find(s[right]) != charMap.end()) {
+            // 确保 left 不会回退
+            left = max(left, charMap[s[right]] + 1);
+        }
+        charMap[s[right]] = right; // 更新字符的最新位置
+        maxLen = max(maxLen, right - left + 1);
+    }
+    return maxLen;
+}
+{% endhighlight %}
+
+## 回溯
+{% highlight cpp %}
+#include <vector>
+#include <algorithm> // 用于排序去重
+using namespace std;
+
+class Solution {
+private:
+    vector<vector<int>> result; // 存储结果
+    vector<int> path;           // 当前路径
+
+    // 核心回溯函数
+    void backtrack(int start, vector<int>& nums, vector<bool>& used, int target) {
+        // 终止条件：根据问题调整
+        if (target == 0) { // 例如：组合总和问题
+            result.push_back(path);
+            return;
+        }
+        if (target < 0) return; // 剪枝
+
+        for (int i = start; i < nums.size(); ++i) { // 组合问题用start，排列问题i从0开始
+            // 剪枝条件（根据问题调整）
+            // 去重：排序后跳过重复元素（需i > start）
+            if (i > start && nums[i] == nums[i - 1]) continue;
+            // 跳过已用元素（排列问题）
+            if (used[i]) continue;
+
+            // 做选择
+            path.push_back(nums[i]);
+            used[i] = true; // 标记已使用（排列问题需要）
+            
+            // 递归：参数根据问题调整
+            // 组合问题：i+1（不可重复）或i（可重复）
+            // 排列问题：无需start，但需used标记
+            backtrack(i + 1, nums, used, target - nums[i]);
+            
+            // 撤销选择
+            path.pop_back();
+            used[i] = false;
+        }
+    }
+
+public:
+    vector<vector<int>> solveProblem(vector<int>& nums, int target) {
+        vector<bool> used(nums.size(), false);
+        sort(nums.begin(), nums.end()); // 若需去重，先排序
+        backtrack(0, nums, used, target);
+        return result;
+    }
+};
+
+{% endhighlight %}
+
+## 动态规划问题
+
+- 带备忘录的递归
+- 自下而上的迭代
+
+满足这两个条件，就可以用动态规划解题。一般先写一下决策树，观察是否有相同子问题，最后自下而上找到状态转移方程。注意底部直接返回的值的设置和非法路径的及时返回，还有就是动态规划递推数组大小的设置。
