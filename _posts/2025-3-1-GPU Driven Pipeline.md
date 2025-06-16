@@ -40,7 +40,7 @@ GPU Driven Rendering Pipeline（GDRP）是一种基于GPU的渲染管线，它�
 - 64适配GPU共享内存
 - 三角形数 <126 优化索引存储（8-bit）
 
-{% highlight cpp %}
+``` cpp
 class MeshletModel {
 public:
     // Meshlet is a part of the model's mesh
@@ -119,7 +119,7 @@ protected:
 
     BoundingBox m_aabb;
 };
-{% endhighlight %}
+```
 
 ### 与传统管线的对比
 
@@ -127,9 +127,27 @@ protected:
     1. 任务着色器：可编程单元，在工作组中工作，允许每个单元发射（或不发射）网格着色器工作组。任务着色器的操作类似于细分的外壳着色器阶段，因为它能够动态生成工作。但是，与网格着色器一样，任务着色器也使用协作线程模式。它的输入和输出是用户定义的，而不必将面片作为输入，将细分决策作为输出。
     2. 网格着色器：可编程单元，在工作组中运行，允许每个工作组生成原语。mesh shader stage 在内部使用上述协作线程模型为光栅化器生成三角形，直通光栅化。
 
-<<<<<<< HEAD
 <img src="./new_pipeline.png" alt="描述" style="display: block; margin: auto; width: 50%;">
-=======
-<img src="new_pipeline.png" alt="描述" style="display: block; margin: auto; width: 50%;">
->>>>>>> 9d749bb957cc50ccbc2f4169863f62a95f89e25f
+
+### 细分方案
+
+参考文章《Adaptive GPU Tessellation with Compute Shaders》--
+Jad Khoury, Jonathan Dupuy, and
+Christophe Riccio的细分方案
+
+```
+
+mat3 bitToXform (in uint bit )
+{
+   float s = float ( bit ) - 0.5;
+   vec3 c1 = vec3 ( s , -0.5 , 0) ;
+   vec3 c2 = vec3 ( -0.5 , -s , 0) ;
+   vec3 c3 = vec3 (+0.5 , +0.5 , 1) ;
+   return mat3 (c1 , c2 , c3 );
+}
+
+```
+
+## ETER的GPU细分管线
+
 

@@ -9,7 +9,7 @@ math: true
 ---
 
 ## 二分法
-{% highlight cpp %}
+``` cpp
 #include vector>
 using namespace std;
 
@@ -31,10 +31,10 @@ int binarySearch(const vector<int>& nums, int target) {
     }
     return -1; // 未找到
 }
- {% endhighlight %}
+```
 
 ## 合并排序
-  {% highlight cpp %}
+  ``` cpp
  #include <vector>
 using namespace std;
 
@@ -73,10 +73,10 @@ void merge(vector<T>& arr, int left, int mid, int right, vector<T>& temp) {
         arr[left+p] = temp[p];
     }
 }
- {% endhighlight %}
+```
 
  ## 快速排序
- {% highlight cpp %}
+ ``` cpp
 #include <vector>
 #include <ctime>
 #include <cstdlib>
@@ -131,9 +131,9 @@ private:
 vector<int> arr = {3,1,4,1,5,9,2,6};
 QuickSort().sort(arr);
 */
- {% endhighlight %}
+```
 
- {% highlight cpp %}
+ ``` cpp
 #include <vector>
 #include <cstdlib> // 用于rand()
 
@@ -177,10 +177,10 @@ private:
         return store_index;
     }
 };
- {% endhighlight %}
+```
 
  ## 单调栈
- {% highlight cpp %}
+ ``` cpp
  #include <vector>
 #include <stack>
 
@@ -221,10 +221,10 @@ nums = [2,1,3,4,2,1]
 nextGreater 结果：[3,3,4,-1,-1,-1]
 prevSmaller 结果：[-1,-1,1,2,1,-1]
 */
-{% endhighlight %}
+```
 
 ## 单调队列
-{% highlight cpp %}
+``` cpp
 #include <deque>
 #include <vector>
 
@@ -252,10 +252,10 @@ vector<int> maxSlidingWindow(vector<int>& nums, int k) {
     }
     return result;
 }
-{% endhighlight %}
+```
 
 ## 滑动窗口
-{% highlight cpp %}
+``` cpp
 int lengthOfLongestSubstring(string s) {
     unordered_map<char, int> charMap;
     int left = 0, maxLen = 0;
@@ -269,10 +269,11 @@ int lengthOfLongestSubstring(string s) {
     }
     return maxLen;
 }
-{% endhighlight %}
+```
 
 ## 回溯
-{% highlight cpp %}
+
+``` cpp
 #include <vector>
 #include <algorithm> // 用于排序去重
 using namespace std;
@@ -321,12 +322,11 @@ public:
         return result;
     }
 };
-
-{% endhighlight %}
+```
 
 ## 动态规划问题
 
 - 带备忘录的递归
 - 自下而上的迭代
 
-满足这两个条件，就可以用动态规划解题。一般先写一下决策树，观察是否有相同子问题，最后自下而上找到状态转移方程。注意底部直接返回的值的设置和非法路径的及时返回，还有就是动态规划递推数组大小的设置。
+- 满足这两个条件，就可以用动态规划解题。一般先写一下决策树，观察是否有相同子问题，最后自下而上找到状态转移方程。注意底部直接返回的值的设置和非法路径的及时返回，还有就是动态规划递推数组大小的设置。
