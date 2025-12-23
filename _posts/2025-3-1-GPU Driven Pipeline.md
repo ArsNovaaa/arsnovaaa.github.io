@@ -149,5 +149,26 @@ mat3 bitToXform (in uint bit )
 ```
 
 ## ETER的GPU细分管线
+几个概念
 
+### T-junctions：
+
+- 三角形的两个边界线相交于一个点，称为T-junction。
+- T-junctions在三角形的边界上，会导致三角形的切线发生扭曲，导致三角形的形状发生变化。
+
+<img src="./TJ.jpg" alt="描述" style="display: block; margin: auto; width: 50%;">
+
+### bezier曲面求值
+
+- 二次曲面：$B(u,v) = (1-u)^2(1-v) + 2u(1-u)v + u^2v$
+- 三次曲面：$B(u,v) = (1-u)^3(1-v) + 3u(1-u)^2v + 3u^2(1-u)v + u^3v$
+
+<img src="./bezier.jpg" alt="描述" style="display: block; margin: auto; width: 50%;">
+
+### 视锥体剔除
+
+- 视锥体：$Frustum(l,r,b,t,n,f) = {x,y,z | l \leq x \leq r, b \leq y \leq t, n \leq z \leq f}$
+- 视锥体剔除：将三角形的顶点投影到视锥体上，如果投影点在视锥体外部，则剔除该三角形。
+
+<img src="./frustum-occ.jpg" alt="描述" style="display: block; margin: auto; width: 50%;">
 
